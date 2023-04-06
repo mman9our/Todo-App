@@ -1,4 +1,4 @@
-<p align="center"> Todo List Web application </p>
+<p align="center"> Todo List Web Application </p>
 
 ![Cover (3)](https://user-images.githubusercontent.com/72463762/230387178-f09bf50b-fd99-4cf3-a727-e9d0873a3ff1.png)
 
