@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Todo List App" />
+        <meta name="author" content="Mohamed Mansour" />
+        <title>Todo App</title>
+
+        <!-------------------- MATERIAL ICNOS CDN -------------------->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
+        <!-------------------- GOOGLE ICONS -------------------->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
+        <!-------------------- GOOGLE FONTS  -------------------->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" >
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' >
+        <!--------------------FAIV ICON -------------------->
+        <link rel="icon" type="image/x-icon" href="/computer.ico">
+        <!-------------------- STYLESHEET -------------------->
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/tasks.css">
+    </head>
+
+    <body>
+        <!-------------------- START NAVBAR -------------------->
+        <nav>
+            <div class="container">
+                <a href="#">
+                <img src="/images/logo.png" class="logo" alt="Logo photo">
+                </a>
+                <div class="search-bar">
+                    <span class="material-symbols-sharp">search</span> 
+                    <input id="searchbox" type="search" placeholder="Search for the task">
+                </div>
+                <div class="profile-area">
+                    <div class="theme-btn">
+                        <span class="material-symbols-sharp active">light_mode</span>
+                        <span class="material-symbols-sharp ">dark_mode</span>
+                    </div>
+                    <div class="profile">
+                        <div class="profile-photo">
+                            <img src="/images/beard-man.png" alt="Person Photo">
+                        </div>
+                        <h4 id="user-name"></h4>
+                        <span class="material-symbols-sharp">expand_more</span>
+                    </div>
+                    <button id="menu-btn">
+                    <span class="material-symbols-sharp">menu</span>                        
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-------------------- END NAVBAR -------------------->
+        
+        <!-------------------- START MAIN --------------------->
+        <main>
+            <!-------------------- START ASIDE -------------------->
+            <aside>
+                <button id="close-btn">
+                <span class="material-symbols-sharp">close</span>
+                </button>
+                <div class="sidebar">
+                    <a class="active" href="#">
+                        <span class="material-symbols-sharp">Home</span>
+                        <h4>Home</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-symbols-sharp">star</span>                                
+                        <h4>Important</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-symbols-sharp">date_range</span>
+                        <h4>Planned</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-symbols-sharp">person</span>
+                        <h4>Assigned to me</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-symbols-sharp">leaderboard</span>
+                        <h4>Statistics</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-symbols-sharp">Settings</span>
+                        <h4>Settings</h4>
+                    </a>
+                </div>
+
+                <div class="updates">
+                    <div class="social-link">
+                        <span class="material-symbols-sharp">update</span>
+                        <a href="https://github.com/mman9our" target="_blank" aria-label="Github">
+                            <i class='github-img bx bxl-github'></i>
+                        </a>
+                    </div>
+                    <h4>Updates Avilable</h4>
+                    <p>Secuirty Updates</p>
+                    <p>General Updates</p>
+                    <a class="btn-update" href="#">Update Now</a>
+                </div>
+            </aside>
+            <!-------------------- END ASIDE -------------------->
+
+            <!-------------------- START MIDDLE -------------------->
+            <section class="middle">
+                <div id="center-div">
+                    <!-------------------- START TASKS TABLE -------------------->
+                    <div class="tasks-table">
+                        <!-------------------- START Header --------------------> 
+                        <div class="header">
+                            <span id="add-btn">Add Task</span>
+                        </div>
+                        <!-------------------- END HEADER -------------------->
+                        <!-------------------- START TASKS -------------------->
+                        <div id="tasks">
+                            <!-------------------- START TASK CARD -------------------->
+                            <div class="task">
+                                <!-------------------- START TASK INFO -------------------->
+                                <div class="task-info">
+                                    <h2>Read a Book</h2>
+                                    <div></div>
+                                </div>
+                                <!-------------------- END TASK INFO -------------------->
+                                <!-------------------- START TASK ACTIONS -------------------->
+                                <div class="task-actions">
+                                    <button class="circular btn-delete"></button>
+                                    <button class="circular btn-isDone"></button>
+                                </div>
+                                <!-------------------- END TASK ACTIONS -------------------->
+                            </div>
+                            <!-------------------- END TASK CARD -------------------->
+                        </div>
+                            <!-------------------- END TASK CARD -------------------->
+                    </div>
+                    <!-------------------- END TASKS TABLE -------------------->
+                </div>
+            </section>
+            <!-------------------- END MIDDLE -------------------->
+
+            <!-------------------- START RIGHT -------------------->
+            <section class="right">
+                <div class="quick-look">
+                    
+                    <div class="header">
+                        <h3>Quick Look</h3>
+                        <a href="#">Details<span class="material-symbols-sharp">chevron_right</span>
+                        </a>
+                    </div>
+
+                    <!-------------------- START OF QUICK LOOK ELEMENTS -------------------->
+                    <!-------------------- START OF ELEMENT 1-------------------->
+                    <div class="quick-look-element">
+                        <img src="/images/Completed-Tasks.svg" alt="completing photo">
+                        <h4>Completed Tasks</h4>
+                        <div class="amount">
+                            <h4 id="number-complete-task"></h4>
+                            <small class="success">Task</small>
+                        </div>
+                    </div>
+                    <!-------------------- END OF ELEMENT 1-------------------->
+                    <!-------------------- START OF ELEMENT 2-------------------->
+                    <div class="quick-look-element">
+                        <img src="/images/Current-Tasks.svg" alt="Current Location Photo">
+                        <h4>Current Tasks</h4>
+                        <div class="amount">
+                            <h4 id="number-current-task"></h4>
+                            <small class="purple">Task</small>
+                        </div>
+                    </div>
+                    <!-------------------- END OF ELEMENT 2-------------------->
+                    <!-------------------- START OF ELEMENT 3-------------------->
+                    <div class="quick-look-element">
+                        <img src="/images/All-Tasks.svg" alt="All Tasks Photo">
+                        <h4>Number of all Tasks</h4>
+                        <div class="amount">
+                            <h4 id="number-all-task"></h4>
+                            <small class="purple">Task</small>
+                        </div>
+                    </div>
+                    <!-------------------- END OF ELEMENT 3-------------------->
+                    <!-------------------- START OF ELEMENT 4-------------------->
+                    <div class="quick-look-element">
+                        <img src="/images/Deleted-Task.svg" alt="Delete Photo" >
+                        <h4>Deleted Task</h4>
+                        <div class="amount">
+                            <h4 id="number-deleted-task"></h4>
+                            <small class="danger">Task</small>
+                        </div>
+                    </div>
+                    <!-------------------- END OF ELEMENT 4-------------------->
+                </div>
+                <!-------------------- END OF QUICK LOOK ELEMENTS -------------------->
+
+                <!-------------------- START OF LIST ITEM ELEMENTS -------------------->
+                <div class="recent-list">
+
+                    <div class="header">
+                        <h3>Recent Lists</h3>
+                        <a href="#">More 
+                            <span class="material-symbols-sharp">chevron_right</span>
+                        </a>
+                    </div>
+
+                    <!-------------------- START LIST ITEM  -------------------->
+                    <div class="list-item">
+                        <div class="service">
+                            <div class="icon bg-success-light">
+                                <span class="material-symbols-sharp success">terminal</span>
+                            </div>
+                            <div class="details">
+                                <h4>Coding</h4>
+                                <p>29.2.2023</p>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card bg-success">
+                                <p>Complete</p>
+                            </div>
+                            <div class="details">
+                                <P>5</P>
+                                <small>completed tasks</small>
+                            </div>
+                        </div>
+                        <h4>100%</h4>
+                    </div>
+                    <!-------------------- END LIST ITEM  -------------------->
+
+                    <!-------------------- START LIST ITEM  -------------------->
+                    <div class="list-item">
+                        <div class="service">
+                            <div class="icon bg-purple-light">
+                                <span class="material-symbols-sharp purple">school</span>
+                            </div>
+                            <div class="details">
+                                <h4>College</h4>
+                                <p>26.2.2023</p>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card bg-purple">
+                                <P>Progress</P>
+                            </div>
+                            <div class="details">
+                                <P>13</P>
+                                <small>completed tasks</small>
+                            </div>
+                        </div>
+                        <h4>15%</h4>
+                    </div>
+                    <!-------------------- END LIST ITEM  -------------------->
+
+                    <!-------------------- START LIST ITEM  -------------------->
+                    <div class="list-item">
+                        <div class="service">
+                            <div class="icon bg-primary-light">
+                                <span class="material-symbols-sharp purple">Shopping_bag</span>
+                            </div>
+                            <div class="details">
+                                <h4>Shopp</h4>
+                                <p>2.11.2023</p>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card bg-purple">
+                                <p>Progress</p>
+                            </div>
+                            <div class="details">
+                                <P>3</P>
+                                <small>completed tasks</small>
+                            </div>
+                        </div>
+                        <h4>40%</h4>
+                    </div>
+                    <!-------------------- END LIST ITEM  -------------------->
+
+                    <!-------------------- START LIST ITEM  -------------------->
+                    <div class="list-item">
+                        <div class="service">
+                            <div class="icon bg-success-light">
+                                <span class="material-symbols-sharp success">directions_bike</span>
+                            </div>
+                            <div class="details">
+                                <h4>Soprt</h4>
+                                <p>4.1.2023</p>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card bg-success">
+                                <p>Complete</p>
+                            </div>
+                            <div class="details">
+                                <P>10</P>
+                                <small>completed tasks</small>
+                            </div>
+                        </div>
+                        <h4>100%</h4>
+                    </div>
+                    <!-------------------- END LIST ITEM  -------------------->
+
+                    <!-------------------- START LIST ITEM  -------------------->
+                    <div class="list-item">
+                        <div class="service">
+                            <div class="icon bg-danger-light">
+                                <span class="material-symbols-sharp danger">local_library</span>
+                            </div>
+                            <div class="details">
+                                <h4>Read</h4>
+                                <p>4.4.2023</p>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card bg-danger">
+                                <p>Canceled</p>
+                            </div>
+                            <div class="details">
+                                <P>1</P>
+                                <small>completed tasks</small>
+                            </div>
+                        </div>
+                        <h4>20%</h4>
+                    </div>
+                    <!-------------------- END LIST ITEM  -------------------->
+                </div>
+                <!-------------------- END OF LIST ITEM ELEMENTS -------------------->
+
+            </section>
+            <!-- END RIGHT -->
+        </main>
+        <!-------------------- END MAIN --------------------->
+
+        <script src="/js/main.js"></script>
+        <script src="/js/script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </body>
+</html>
