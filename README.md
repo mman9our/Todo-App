@@ -31,7 +31,7 @@ Technologies Used
 
 Authors
 ---
-* 🥷Mohamed Mansour
+* 🧑‍💻Mohamed Mansour
 
 Contributors
 ---
