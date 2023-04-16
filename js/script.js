@@ -38,23 +38,32 @@ function fillTaskOnPage() {
         tasksContainer.innerHTML = emptyTasksContainer;
         return;
     }
+
+    // Loop over each task object in the tasks array
     for (const task of tasks) {
+
+        // Create a new div element to represent the task
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("task");
+
+        // If the task is marked as done, add "done" class to the task div.
         if (task.isDone) {
             taskDiv.classList.add("done");
         }
-    
+
+        // Create a new div to hold the task information
         const taskInfoDiv = document.createElement("div");
         taskInfoDiv.classList.add("task-info");
-    
-        
+
+        // Create a h2 element with the task title
         const taskTitle = document.createElement("h2");
         taskTitle.textContent = task.title;
         taskTitle.classList.add("task-title");
 
+        // Append the task title element as a child of the task info div
         taskInfoDiv.appendChild(taskTitle);
-    
+
+        // Create a div to hold the task assignee information
         const taskAssignDiv = document.createElement("div");
         const taskAssignIcon = document.createElement("span");
         taskAssignIcon.classList.add("material-symbols-sharp");
@@ -64,7 +73,8 @@ function fillTaskOnPage() {
         taskAssignDiv.appendChild(taskAssignIcon);
         taskAssignDiv.appendChild(taskAssignText);
         taskInfoDiv.appendChild(taskAssignDiv);
-    
+
+        // Create a div to hold the task due date information
         const taskDateDiv = document.createElement("div");
         const taskDateIcon = document.createElement("span");
         taskDateIcon.classList.add("material-symbols-sharp");
@@ -74,64 +84,98 @@ function fillTaskOnPage() {
         taskDateDiv.appendChild(taskDateIcon);
         taskDateDiv.appendChild(taskDateText);
         taskInfoDiv.appendChild(taskDateDiv);
-    
+
+        // Append the task info div as a child of the task div
         taskDiv.appendChild(taskInfoDiv);
-    
+
+
+        // Create a container div for the task actions
         const taskActionsDiv = document.createElement("div");
         taskActionsDiv.classList.add("task-actions");
-    
+
+        // Create a delete button and add classes and event listener to it
         const deleteButton = document.createElement("button");
         deleteButton.classList.add("circular", "btn-delete");
         deleteButton.addEventListener("click", () => {
             deleteTask(task.id);
         });
+
+        deleteButton.removeEventListener('click', onDeleteButtonClick);
+
+        function onDeleteButtonClick(event) {
+            // Get the ID of the associated task
+            const taskId = event.target.dataset.taskId;
+
+            // Call the deleteTask function with the task ID as an argument
+            deleteTask(taskId);
+
+
+        }
+
+        // Create a delete icon using a span element with classes added to it
         const deleteIcon = document.createElement("span");
         deleteIcon.classList.add("material-symbols-sharp", "btn-delete-icon");
         deleteIcon.textContent = "delete";
+
+        // Append the delete icon to the delete button
         deleteButton.appendChild(deleteIcon);
+
+        // Append the delete button to the task actions div
         taskActionsDiv.appendChild(deleteButton);
-    
+
+
         if (task.isDone) {
+            // create a button to unmark the task as done
             const closeButton = document.createElement("button");
             closeButton.classList.add("circular", "btn-done");
+            // add event listener to the close button
             closeButton.addEventListener("click", () => {
                 toggleTaskCompletion(task.id);
             });
+            // create a close icon and append it to the close button
             const closeIcon = document.createElement("span");
             closeIcon.classList.add("material-symbols-sharp", "btn-done-icon");
             closeIcon.textContent = "close";
             closeButton.appendChild(closeIcon);
+            // append the close button to the task actions div
             taskActionsDiv.appendChild(closeButton);
         } else {
+            // create a button to mark the task as done
             const doneButton = document.createElement("button");
             doneButton.classList.add("circular", "btn-isDone");
+            // add event listener to the done button
             doneButton.addEventListener("click", () => {
                 toggleTaskCompletion(task.id);
             });
+            // create a done icon and append it to the done button
             const doneIcon = document.createElement("span");
             doneIcon.classList.add("material-symbols-sharp", "btn-isDone-icon");
             doneIcon.textContent = "done";
             doneButton.appendChild(doneIcon);
+            // append the done button to the task actions div
             taskActionsDiv.appendChild(doneButton);
         }
-    
+
+        // append the task actions div to the task div
         taskDiv.appendChild(taskActionsDiv);
+        // append the task div to the tasks container
         tasksContainer.appendChild(taskDiv);
-    
+
+
         // Update task counters
         if (task.isDone) {
             completedTasks++;
         } else {
             uncompletedTasks++;
         }
-    
+
         // Update the task counter display
         updateTaskCounter("number-complete-task", completedTasks);
         updateTaskCounter("number-current-task", uncompletedTasks);
         updateTaskCounter("number-all-task", tasks.length);
         updateDeletedTasksCounter("number-deleted-task", deletedTasks);
     }
-    
+
 
     // function to update a task counter display
     function updateTaskCounter(counterId, count) {
@@ -193,13 +237,12 @@ addBtn.addEventListener("click", async () => {
 });
 
 
-
 function deleteTask(taskId) {
     // Get the nav and main elements for blurring effect
     const navContainer = document.querySelector('nav');
     const mainContainer = document.querySelector('main');
 
-    
+
     // Find the index of the task with the given ID
     const index = tasks.findIndex(task => task.id === taskId);
 
@@ -248,7 +291,6 @@ function toggleTaskCompletion(taskId) {
     // Refresh the task list on the page to reflect the updated status
     fillTaskOnPage();
 }
-
 
 
 function storeTasks() {
