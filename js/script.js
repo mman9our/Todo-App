@@ -1,15 +1,19 @@
 let tasks = [];
 let deletedTasks = 0;
 
-
 // Retrieves tasks from local storage and assigns them to a variable named "tasks".
-// If there are no tasks stored in local storage, an empty array is assigned to the "tasks" variable. " Bug Foundded and solve✅ "
+// If there are no tasks stored in local storage, an empty array is assigned to the "tasks" variable.
 function getTasksFromStorage() {
-    let storedTasks = JSON.parse(localStorage.getItem("tasks"));
-    tasks = storedTasks ?? [];
+    try {
+        const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+        tasks = storedTasks ?? [];
+    } catch (error) {
+        console.error("Error retrieving tasks from storage:", error);
+        tasks = [];
+    }
 }
-getTasksFromStorage();
 
+getTasksFromStorage();
 
 // Get the DOM element that will contain the tasks
 const tasksContainer = document.getElementById("tasks");
@@ -25,7 +29,7 @@ const emptyTasksContainer = `
 // Get tasks from an array and display them on the screen
 function fillTaskOnPage() {
     tasksContainer.innerHTML = "";
-    let index = 0;
+    // let index = 0;
     let completedTasks = 0;
     let uncompletedTasks = 0;
 
@@ -35,51 +39,128 @@ function fillTaskOnPage() {
         return;
     }
 
+    // Loop over each task object in the tasks array
+    for (const task of tasks) {
 
-    // Loop through each task and create its HTML content
-    for (task of tasks) {
-        let content = `
-                <div class="task ${task.isDone ? "done": ""}">
-                <div class="task-info">
-                <h2 onclick="makeTaskEditable(${index})">${task.title}</h2>
-                
-                <div>
-                        <span class="material-symbols-sharp">
-                        calendar_month
-                        </span>
-                        <span>
-                        ${task.date}
-                        </span>
-                </div>
-                </div>
-                <div class="task-actions">
-                        <button onclick="deleteTask(${index})" class="circular btn-delete">
-                        <span class="material-symbols-sharp btn-delete-icon">
-                                delete
-                                </span>
-                        </button>
-                        ${task.isDone ? `
-                        <button onclick="toggleTaskCompletion(${index})" class="circular btn-done">
-                        <span class="material-symbols-sharp btn-done-icon">
-                                close
-                        </span>
-                        </button>
-                        ` : 
-                        `
-                        <button onclick="toggleTaskCompletion(${index})" class="circular btn-isDone">
-                        <span class="material-symbols-sharp btn-isDone-icon">
-                                done
-                                </span>
-                        </button>
-                        `
-                }
-                </div>
-                <!--// TASK ACTIONS //-->
-        </div>
-        `;
+        // Create a new div element to represent the task
+        const taskDiv = document.createElement("div");
+        taskDiv.classList.add("task");
 
-        document.getElementById("tasks").innerHTML += content;
-        index++;
+        // If the task is marked as done, add "done" class to the task div.
+        if (task.isDone) {
+            taskDiv.classList.add("done");
+        }
+
+        // Create a new div to hold the task information
+        const taskInfoDiv = document.createElement("div");
+        taskInfoDiv.classList.add("task-info");
+
+        // Create a h2 element with the task title
+        const taskTitle = document.createElement("h2");
+        taskTitle.textContent = task.title;
+        taskTitle.classList.add("task-title");
+
+        // Append the task title element as a child of the task info div
+        taskInfoDiv.appendChild(taskTitle);
+
+        // Create a div to hold the task assignee information
+        const taskAssignDiv = document.createElement("div");
+        const taskAssignIcon = document.createElement("span");
+        taskAssignIcon.classList.add("material-symbols-sharp");
+        taskAssignIcon.textContent = "person";
+        const taskAssignText = document.createElement("span");
+        taskAssignText.textContent = task.assign;
+        taskAssignDiv.appendChild(taskAssignIcon);
+        taskAssignDiv.appendChild(taskAssignText);
+        taskInfoDiv.appendChild(taskAssignDiv);
+
+        // Create a div to hold the task due date information
+        const taskDateDiv = document.createElement("div");
+        const taskDateIcon = document.createElement("span");
+        taskDateIcon.classList.add("material-symbols-sharp");
+        taskDateIcon.textContent = "calendar_month";
+        const taskDateText = document.createElement("span");
+        taskDateText.textContent = task.date;
+        taskDateDiv.appendChild(taskDateIcon);
+        taskDateDiv.appendChild(taskDateText);
+        taskInfoDiv.appendChild(taskDateDiv);
+
+        // Append the task info div as a child of the task div
+        taskDiv.appendChild(taskInfoDiv);
+
+
+        // Create a container div for the task actions
+        const taskActionsDiv = document.createElement("div");
+        taskActionsDiv.classList.add("task-actions");
+
+        // Create a delete button and add classes and event listener to it
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("circular", "btn-delete");
+        deleteButton.addEventListener("click", () => {
+            deleteTask(task.id);
+        });
+
+        deleteButton.removeEventListener('click', onDeleteButtonClick);
+
+        function onDeleteButtonClick(event) {
+            // Get the ID of the associated task
+            const taskId = event.target.dataset.taskId;
+
+            // Call the deleteTask function with the task ID as an argument
+            deleteTask(taskId);
+
+
+        }
+
+        // Create a delete icon using a span element with classes added to it
+        const deleteIcon = document.createElement("span");
+        deleteIcon.classList.add("material-symbols-sharp", "btn-delete-icon");
+        deleteIcon.textContent = "delete";
+
+        // Append the delete icon to the delete button
+        deleteButton.appendChild(deleteIcon);
+
+        // Append the delete button to the task actions div
+        taskActionsDiv.appendChild(deleteButton);
+
+
+        if (task.isDone) {
+            // create a button to unmark the task as done
+            const closeButton = document.createElement("button");
+            closeButton.classList.add("circular", "btn-done");
+            // add event listener to the close button
+            closeButton.addEventListener("click", () => {
+                toggleTaskCompletion(task.id);
+            });
+            // create a close icon and append it to the close button
+            const closeIcon = document.createElement("span");
+            closeIcon.classList.add("material-symbols-sharp", "btn-done-icon");
+            closeIcon.textContent = "close";
+            closeButton.appendChild(closeIcon);
+            // append the close button to the task actions div
+            taskActionsDiv.appendChild(closeButton);
+        } else {
+            // create a button to mark the task as done
+            const doneButton = document.createElement("button");
+            doneButton.classList.add("circular", "btn-isDone");
+            // add event listener to the done button
+            doneButton.addEventListener("click", () => {
+                toggleTaskCompletion(task.id);
+            });
+            // create a done icon and append it to the done button
+            const doneIcon = document.createElement("span");
+            doneIcon.classList.add("material-symbols-sharp", "btn-isDone-icon");
+            doneIcon.textContent = "done";
+            doneButton.appendChild(doneIcon);
+            // append the done button to the task actions div
+            taskActionsDiv.appendChild(doneButton);
+        }
+
+        // append the task actions div to the task div
+        taskDiv.appendChild(taskActionsDiv);
+        // append the task div to the tasks container
+        tasksContainer.appendChild(taskDiv);
+
 
         // Update task counters
         if (task.isDone) {
@@ -94,6 +175,7 @@ function fillTaskOnPage() {
         updateTaskCounter("number-all-task", tasks.length);
         updateDeletedTasksCounter("number-deleted-task", deletedTasks);
     }
+
 
     // function to update a task counter display
     function updateTaskCounter(counterId, count) {
@@ -110,43 +192,44 @@ fillTaskOnPage();
 
 // Get the add button element from the DOM
 const addBtn = document.getElementById("add-btn");
-// Add event listener to the add button
+
 addBtn.addEventListener("click", async () => {
     const {
-        value: text
+        value: title
     } = await Swal.fire({
         input: "textarea",
         inputLabel: "Task title",
         inputPlaceholder: "Type the title of your new task",
         showCancelButton: true,
     });
-    let taskName = text;
 
-    // Get the current date and time
+    const {
+        value: assign
+    } = await Swal.fire({
+        input: "text",
+        inputLabel: "Assignee",
+        inputPlaceholder: "Type the name of the assignee",
+        showCancelButton: true,
+    });
+
     const now = new Date();
-
-    // Get the hour and minute components of the current time
     const hour = now.getHours();
     const minute = now.getMinutes();
-
-    // Determine whether the current time is in AM or PM
     const period = hour >= 12 ? "PM" : "AM";
-
-    // Convert the hour to 12-hour format
     const hour12 = hour % 12 || 12;
-
-    // Format the date string with the hour, minute, and period
     const date = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} | ${hour12}:${minute.toString().padStart(2, "0")} ${period}`;
 
-
     let taskObj = {
-        title: taskName,
+        id: Math.random().toString(36).substr(2, 9),
+        title: title,
         date: date,
         isDone: false,
+        assign: assign
     };
 
     if (taskObj.title == "") return;
-    if (taskObj.title != null) {
+    if (taskObj.assign == "") return;
+    if (taskObj.title != null && taskObj.assign != null) {
         tasks.push(taskObj);
         storeTasks();
         fillTaskOnPage();
@@ -154,10 +237,14 @@ addBtn.addEventListener("click", async () => {
 });
 
 
-function deleteTask(index) {
+function deleteTask(taskId) {
     // Get the nav and main elements for blurring effect
     const navContainer = document.querySelector('nav');
     const mainContainer = document.querySelector('main');
+
+
+    // Find the index of the task with the given ID
+    const index = tasks.findIndex(task => task.id === taskId);
 
     // Get the task to be deleted
     const task = tasks[index];
@@ -193,10 +280,10 @@ function deleteTask(index) {
 }
 
 
-// This function toggles the completion status of a task based on its index in the tasks array
-function toggleTaskCompletion(index) {
-    // Get the task object at the given index
-    let task = tasks[index];
+// This function toggles the completion status of a task based on its id
+function toggleTaskCompletion(taskId) {
+    // Get the task object with the given id
+    let task = tasks.find(task => task.id === taskId);
     // Toggle the isDone property of the task object
     task.isDone = !task.isDone;
     // Save the updated tasks array to local storage
@@ -206,12 +293,16 @@ function toggleTaskCompletion(index) {
 }
 
 
-// This function saves the current state of the tasks array to local storage
 function storeTasks() {
-    // Convert the tasks array to a JSON string
-    let taskString = JSON.stringify(tasks);
-    // Save the stringified tasks array to local storage under the key "tasks"
-    localStorage.setItem("tasks", taskString);
+    try {
+        // Convert the tasks array to a JSON string
+        let taskString = JSON.stringify(tasks);
+        // Save the stringified tasks array to local storage under the key "tasks"
+        localStorage.setItem("tasks", taskString);
+    } catch (e) {
+        console.error("Error storing tasks in local storage:", e);
+        // Handle the error as appropriate (e.g. show an error message to the user)
+    }
 }
 
 
@@ -232,62 +323,6 @@ searchInput.addEventListener("input", function () {
         }
     });
 });
-
-
-// This function allows the user to edit a task's title by clicking on it.
-function makeTaskEditable(index) {
-    // Find the task element via specified index,
-    // and get the title element and the task object associated with it.
-    const taskElement = document.querySelectorAll('.task')[index];
-    const titleElement = taskElement.querySelector('h2');
-    const task = tasks[index];
-
-    // Add a click event listener to the title element that toggles between
-    // display mode and edit mode.
-    titleElement.addEventListener('click', () => {
-        // If the task is already marked as done, don't allow editing.
-        if (task.isDone === true) {
-            return;
-        }
-
-        // Get the current title and create an input element with the same value.
-        const currentTitle = titleElement.textContent;
-        const inputElement = document.createElement('input');
-        inputElement.value = currentTitle;
-        inputElement.classList.add('task-input');
-
-        // Replace the title element with the input element.
-        titleElement.replaceWith(inputElement);
-
-        // Focus and select the input element so the user can start typing right away.
-        inputElement.focus();
-        inputElement.select();
-
-        // Add a keydown event listener to the input element to handle the
-        // "Enter" key and save the edited title.
-        inputElement.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                // Prevent the default behavior of the "Enter" key (submitting the form).
-                event.preventDefault();
-                // Get the new title from the input element and trim any whitespace.
-                const newTitle = inputElement.value.trim();
-                // If the new title is not empty, update the task object and save it to local storage.
-                if (newTitle) {
-                    // Check again whether the task is done, in case it was marked as done
-                    // while the user was editing the title.
-                    if (task.isDone === true) {
-                        return;
-                    }
-                    // Update the task object and save it to local storage.
-                    tasks[index].title = newTitle;
-                    storeTasks();
-                    // Update the task element on the page with the new title.
-                    fillTaskOnPage();
-                }
-            }
-        });
-    });
-}
 
 
 // This function allows the users enter thier name. 
